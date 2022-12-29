@@ -6,6 +6,7 @@ import com.coe.getters.dto.MessageDTO;
 import com.coe.getters.entities.ContactEntity;
 import com.coe.getters.entities.MessageEntity;
 import com.coe.getters.repository.MessageRepository;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,19 @@ public class MessageController {
             messageDTOList.add(new MessageDTO(entity));
         }
         return messageDTOList;
+    }
+
+    @GetMapping("/conversation/{conversationId}")
+    public List<MessageDTO> getMessageByConversation(@PathVariable("conversationId")int conversationId){
+        List<MessageDTO> dtos = new ArrayList<>();
+        List<MessageEntity> messageEntities = messageRepository.
+                getMessageEntitiesByConversation_ConversationId(conversationId);
+
+        for (MessageEntity entity: messageEntities
+             ) {
+            dtos.add(new MessageDTO(entity));
+        }
+
+        return dtos;
     }
 }
